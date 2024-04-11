@@ -179,6 +179,8 @@
         - [!]클래스는 상속 시 별다른 문제가 없으나, 인터페이스는 약속을 지키지 않으면 빌드 불가
     - 클래스는 상속한다 vs 인터페이스는 구현한다
 
+    ![인터페이스설명](https://raw.githubusercontent.com/RiverGang/basic-csharp-2024/main/images/cs001.png)
+
 - 추상클래스(abstract)
     - Virtual 메서드하고도 유사
     - 추상클래스의 단순화 => 인터페이스
