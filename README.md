@@ -63,7 +63,7 @@
 - 흐름제어
     - C++과 동일
     - if, swich, while, do while, for, break, continue, goto 모두 동일
-    - foreach: python의 for item in []과 동일
+    - **foreach**: python의 for item in []과 동일
     
     ```cs
      int[] arr = { 1, 2, 3, 4, 5 };
@@ -76,7 +76,7 @@
 
 - 메서드(Method)
     - 함수와 동일. 구조적 프로그래밍 -> 함수, 객체지향 -> 메서드
-    - 참조로 인수 전달: ref 키워드
+    - **참조로 인수 전달**: ref 키워드, C++에서 Pointer로 값을 사용할 때와 동일한 기능
 
     ```cs
      public static void RefSwap(ref int a, ref int b)
@@ -185,25 +185,67 @@
     - Virtual 메서드하고도 유사
     - 추상클래스의 단순화 => 인터페이스
 
-- 프로퍼티
+- **프로퍼티**
     - 클래스의 멤버변수 변형, 일반 변수와 유사
     - 멤버변수의 접근제한자를 public으로 했을 때의 객체지향적 문제점(코드오염 등)을 보완하기 위해서 사용
-    - GET 접근자/SET 접근자
+    - get 접근자/set 접근자
         - set은 값 할당 시에 잘못된 데이터가 들어가지 않도록 막야아 함
         - Java: Getter메서드/Setter메서드
 
 
 ## 2일차
+- TIP
+    - [C# 주의사항] 빌드 시 발생하는 오류 해결(프로세스 액세스 오류)
+        - 빌드하고자 하는 프로그램이 백그라운드상에 실행 중이기 때문
+        - Ctrl + Shift + ESC(=작업관리자)에서 해당 프로세스 작업 끝내기 후
+        - 재빌드
+
+
 - 컬렉션(배열, 리스트, 인덱서)
+    - 모든 배열 => System.Array 클래스를 상속받는 하위 클래스
+    - 기본적인 배열의 사용법, Python의 리스트와 동일
+    - 배열 분할 - C# 8.0부터 파이썬의 배열 슬라이스 도입
+    - 컬렉션, 파이썬의 리스트/스택/큐/딕셔너리와 동일
+        - ArrayList
+        - Stack
+        - Queue
+        - Hashtable(=Dictionary)
+    - yield: foreach를 사용할 수 있는 객체로 만들기
+
 - 일반화(Generic) 프로그래밍
+    - Type의 제약을 해소하고자 만든 기능. ArrayList 등이 해결(but, 박싱/언박싱의 문제)
+    - ex) 파이썬 -> 변수에 제약사항 X
+    - **하나의 메서드로 여러 타입의 처리르 해줄 수 있는 프로그래밍 방식**
+    - 일반화 컬렉션
+        - List<T>
+        - Stack<T>, Queue<T>
+        - Dictionary<TKey, TValue>
+    
 - 예외처리
+    - 소스코드 상 문법적 오류: 오류(Error)
+    - 실행 중 생기는 오류: 예외(Exception)
+
 - 대리자와 이벤트
+    - 메서드: 호출 시 매개변수 전달
+    - 대리자: 호출 시 함수(메서드) 자체를 전달
+    - 이벤트: 컴퓨터 내에서 발생하는 객체의 사건들
+    - delegate --> event
+    - 윈폼 개발 = 이벤트 기반(Event driven) 프로그래밍
+    
+- TIP: C# 주석 중 영역을 지정할 수 있는 주석
+    - #region ~ #endregion
+    - 영역을 Expend 또는 Collapse (확장 및 축소 가능)
+
+    ![region주석](https://raw.githubusercontent.com/RiverGang/basic-csharp-2024/main/images/cs002.png)
+
+
+## 3일차
 - 람다식
+- LINQ
 - 애트리뷰트
-- dynamic 형식
-- Winform (파일, 스레드)
+- dynamic 형식(파이썬 실행)
+- Winform UI 개발 + 파일, 스레드
 - 가비지 컬렉션
-- 네트워크 프로그래밍
 
 - WPF
-- 
+- 예제프로젝트
