@@ -287,6 +287,33 @@
 
 
 ## 4일차
+- 윈폼 UI 개발
+    - Winforms로 윈폼 개발 학습
+    - Ctrl + A: 전체선택
+    - 컨트롤 Profix
+        - ComboBox: Cbo ~
+        - CheckBox: Chk ~
+        - RadioButton: Rdo ~
+        - TextBox: Txt~
+        - Button: Btn~
+        - TrackBar: Trb~
+        - ProgressBar: Prg~
+        - TreeView: Trv~
+        - ListView: Lsv~
+        - PictuerBox: Pic~
+        - *Dialog : Dlg~
+
+## 5일차
+- 윈폼 UI 개발(계속)
+    - 스레드 추가
+    - 파일 입출력 추가
+    
+    - 비동기 작업 앱
+    - 윈도우 탐색기 앱
+    - 도서관리 앱 with SQL Server
+    - Modern Design UI 앱
+    - 국가교통정보센터 CCTV뷰 앱
+    - IoT Dummy 앱 with SQL Server
 
 - 예제프로젝트
 - WPF
