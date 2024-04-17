@@ -1,3 +1,7 @@
+using System.ComponentModel;
+using System.Threading; // 스레드 클래스 사용등록
+
+
 namespace ex18_winControlApp
 {
     public partial class FrmMain : Form
@@ -95,6 +99,7 @@ namespace ex18_winControlApp
             FrmModal.Width = 300;
             FrmModal.Height = 100;
             FrmModal.BackColor = Color.Tomato;
+            FrmModal.StartPosition = FormStartPosition.CenterParent;
             FrmModal.ShowDialog(); // 모달창 띄우기
             // 자식창을 닫기 전까지 부모창 건드릴 수 없음 => Modal
 
@@ -108,7 +113,13 @@ namespace ex18_winControlApp
             FrmModaless.Width = 300;
             FrmModaless.Height = 100;
             FrmModaless.BackColor = Color.GreenYellow;
-            FrmModaless.Show(); // 모달리스창 띄우기
+
+            // 모달리스창을 부모 정중앙에 위치할 때는 아래와 같이 작업
+            FrmModaless.StartPosition = FormStartPosition.Manual;
+            FrmModaless.Location = new Point(this.Location.X + (this.Width - FrmModaless.Width) / 2,
+                                    this.Location.Y + (this.Height - FrmModaless.Height) / 2);
+            FrmModaless.Show(this); // 모달리스창 띄우기
+
             // 자식 창과 상관없이 부모창 접근 가능 -> Modaless
         }
 
@@ -179,7 +190,7 @@ namespace ex18_winControlApp
 
         private void PicNomal_Click(object sender, EventArgs e)
         {
-            if(PicNomal.SizeMode == PictureBoxSizeMode.Normal)
+            if (PicNomal.SizeMode == PictureBoxSizeMode.Normal)
             {
                 PicNomal.SizeMode = PictureBoxSizeMode.StretchImage;
             }
@@ -188,5 +199,138 @@ namespace ex18_winControlApp
                 PicNomal.SizeMode = PictureBoxSizeMode.Normal;
             }
         }
+
+        private void BtnFileLoad_Click(object sender, EventArgs e)
+        {
+            // OpenFileDialog 컨트롤을 디자인에서 구성하지 않고 생성하는 방법
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = false; // 여러개(Multy) 파일 선택 금지(false)
+            dialog.Filter = "Text Files(*.txt;*.cs;*.py)|*.txt;*.cs;*.py";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                // UTF-8 한글 깨짐. EUC-KR(Window949), UTF-8(BOM)은 문제없음
+                RtxEditor.LoadFile(dialog.FileName, RichTextBoxStreamType.PlainText);
+            }
+        }
+
+        // 리치텍스트파일 저장 이벤트핸들러
+        private void BtnFileSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "RichText Files(*.rtf)|*.rtf";
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                RtxEditor.SaveFile(dialog.FileName, RichTextBoxStreamType.RichNoOleObjs);
+            }
+        }
+
+        private void BtnNothread_Click(object sender, EventArgs e)
+        {
+            // 프로그레스바
+            var maxValue = 100;
+            var currValue = 0;
+            PrgProcess.Minimum = 0;
+            PrgProcess.Maximum = maxValue;
+            PrgProcess.Value = 0; // 프로그레스바 초기화
+
+            BtnThread.Enabled = false; // Nothread 버튼을 클릭하면 다른 버튼을 클릭하지 못하도록
+            BtnNothread.Enabled = false;
+            BtnStop.Enabled = true; // 평소엔 중단버튼을 누를 수 없지만(false) 쓰레드가 시작되면 중단 버튼 활성화
+            
+            TxtLog.Clear();
+            // 반복 시작
+            for (var i = 0; i <= maxValue; i++)
+            {
+                //내부적으로 복잡하고 시간을 많이 요하는 작업
+                currValue = i;
+                PrgProcess.Value = currValue;
+                TxtLog.AppendText($"현재 진행: {currValue}\r\n"); // \r\n
+                Thread.Sleep(500); // 1000ms = 1초, 500ms = 0.5초
+
+            }
+
+            BtnThread.Enabled = BtnNothread.Enabled = true;
+            BtnStop.Enabled = false;
+        }
+
+        private void BtnThread_Click(object sender, EventArgs e)
+        {
+            var maxValue = 100;
+            PrgProcess.Minimum = 0;
+            PrgProcess.Maximum = maxValue;
+            PrgProcess.Value = 0;
+
+            BtnThread.Enabled = BtnNothread.Enabled = false;
+            BtnStop.Enabled = true;
+
+            BgwProgress.WorkerReportsProgress = true; //진행사항 리포트 활성화
+            BgwProgress.WorkerSupportsCancellation = true; // 백그라운드워커 취소활성화
+            BgwProgress.RunWorkerAsync(null);
+
+        }
+
+        private void BtnStop_Click(object sender, EventArgs e)
+        {
+            BgwProgress.CancelAsync(); //비동기로 취소 실행
+        }
+
+        #region '백그라운드워커 이벤트핸들러'
+        
+        private void DoRealWork(BackgroundWorker worker, DoWorkEventArgs e)
+        {
+            var maxValue = 100;
+            TxtLog.Clear();
+            double currValue = 0;
+            for (var i = 0; i <= maxValue; i++)
+            {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+
+                else
+                {
+                    currValue = i;
+                    Thread.Sleep(500); // 1000ms = 1초, 500ms = 0.5초
+
+                    // 아래를 실행하면, BgwProgress_ProgressChanged 이벤트핸들러의
+                    // ProgressChangedEventArgs내의 ProgressPercentage 속성에 값이 들어감
+                    worker.ReportProgress((int)(currValue / maxValue * 100));
+                }
+
+            }
+        }
+        // 일을 진행
+        private void BgwProgress_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            DoRealWork((BackgroundWorker)sender, e);
+            e.Result = null;
+        }
+
+        // 진행상태 바뀌는 것 표시
+        private void BgwProgress_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            PrgProcess.Value = e.ProgressPercentage;
+            TxtLog.AppendText($"진행률: {PrgProcess.Value}%\r\n");
+        }
+
+        // 진행이 완료되면 그 이후 처리
+        private void BgwProgress_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            if(e.Cancelled)
+            {
+                TxtLog.AppendText("작업이 취소되었습니다.\r\n");
+            }
+            else
+            {
+                TxtLog.AppendText("작업이 완료되었습니다.\r\n");
+            }
+
+            BtnNothread.Enabled = BtnThread.Enabled = Capture;
+            BtnStop.Enabled = false;
+        }
+        #endregion
     }
 }
