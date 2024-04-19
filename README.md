@@ -342,6 +342,8 @@
     - 윈도우 탐색기 앱 종료
         - 실행 결과
 
+        https://github.com/RiverGang/basic-csharp-2024/assets/122778656/98034ddd-82bd-4702-8e6f-f6871f382ca6
+
 
 
 
