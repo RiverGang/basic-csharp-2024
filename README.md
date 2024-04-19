@@ -325,17 +325,48 @@
 
 
 ## 6일차
-- 예제프로젝트
-    - 윈도우 탐색기 앱
-    - 도서관리 앱 with SQL Server
-    - Modern Design UI 앱
-    - 국가교통정보센터 CCTV뷰 앱
-    - IoT Dummy 앱 with SQL Server
+- 토이 프로젝트
+    - 윈도우 탐색기 앱(컨트롤 학습)
+        - MyExplorer 프로젝트 생성
+        - 아이콘 검색: flatinco.com
+        - 확장자 변환: pnq to ico
+        - 트리뷰, 리스트뷰 기능 추가
 
-- WPF
+        ![중간결과](https://raw.githubusercontent.com/RiverGang/basic-csharp-2024/main/images/cs005.png)
 
-## 개인 포트폴리오
-- 심플 메모장앱
-    - 기능
-    - 특징
+        - 미적용: 컨텍스트메뉴 보기 기능, 더블클릭 프로그램 실행 ...
+
+
+## 7일차
+- 토이 프로젝트
+    - 윈도우 탐색기 앱 종료
+        - 실행 결과
+
+
+
+
+        
+    - 도서관리 앱 with SQL Server(Base) ModernUI 앱 (NuGet패키지)
+
+
+## 8일차
+- 토이 프로젝트
+    - 도서관리 앱 종료
+    - IoT Dummy 앱 with SQL Server(IoT, DB)
+    
+    - 국가교통정보센터 CCTV뷰 앱 (OpenAI, NuGet dll, Network)
+
+
+## 개인 토이프로젝트
+- 야구 기록지 프로그램
+    - 특징: 야구 기록 기호를 모르더라도 기록지 작성 가능
+
+    - 기능:
+        - 타자 진루/아웃 -> 전투 상황 -> 타구 방향
+            - 타자 진루: 1,2,3루타, 홈런 | 볼넷/사구/실책
+            - 주자 진루: 타순
+
+            - 타자 아웃: 땅볼, 뜬공, 라이너, 삼진
+            - 주자 아웃: 타구방향
+
     - 배운점
