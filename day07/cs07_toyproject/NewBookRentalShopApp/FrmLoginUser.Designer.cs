@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmLoginUser));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.DgvResult = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -145,6 +146,7 @@
             this.TxtPassword.MaxLength = 32767;
             this.TxtPassword.Name = "TxtPassword";
             this.TxtPassword.PasswordChar = '*';
+            this.TxtPassword.PromptText = "패스워드 입력";
             this.TxtPassword.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.TxtPassword.SelectedText = "";
             this.TxtPassword.SelectionLength = 0;
@@ -176,6 +178,7 @@
             this.TxtUserId.MaxLength = 32767;
             this.TxtUserId.Name = "TxtUserId";
             this.TxtUserId.PasswordChar = '\0';
+            this.TxtUserId.PromptText = "사용자아이디 입력";
             this.TxtUserId.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.TxtUserId.SelectedText = "";
             this.TxtUserId.SelectionLength = 0;
@@ -255,6 +258,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(722, 429);
             this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmLoginUser";
             this.Text = "로그인 사용자";
             this.Load += new System.EventHandler(this.FrmLoginUser_Load);
