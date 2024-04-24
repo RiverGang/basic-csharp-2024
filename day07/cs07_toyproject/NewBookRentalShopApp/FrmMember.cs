@@ -16,11 +16,11 @@ using MetroFramework.Forms;
 
 namespace NewBookRentalShopApp
 {
-    public partial class FrmBookInfo : MetroForm
+    public partial class FrmMember : MetroForm
     {
         private bool isNew = false; // UPDATE(false), INSERT(true)
 
-        public FrmBookInfo()
+        public FrmMember()
         {
             InitializeComponent();
         }
@@ -37,28 +37,17 @@ namespace NewBookRentalShopApp
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(Helper.Common.ConnString))
-                {
-                    conn.Open();
-                    var query = @"SELECT Division, Names FROM divtbl";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    var temp = new Dictionary<string, object>();
+                var  temp = new Dictionary<string, string>();
+                
+                temp.Add("A", "A");
+                temp.Add("B", "B");
+                temp.Add("C", "C");
+                temp.Add("D", "D");
 
-                    while (reader.Read())
-                    {
-                        // Key, Value
-                        // B001, 공포/스릴러
-                        // readerp[0] = Division컬럼, reader[1] = Names 컬럼
-                        temp.Add(reader[0].ToString(), reader[1].ToString());
-                    }
-
-                    Debug.WriteLine(temp.Count);
-                    CboDivision.DataSource = new BindingSource(temp, null);
-                    CboDivision.DisplayMember = "Value"; // 공포/스릴러 표시
-                    CboDivision.ValueMember = "Key"; // B001
-                    CboDivision.SelectedIndex = -1;
-                }
+                CboLevels.DataSource = new BindingSource(temp, null);
+                CboLevels.DisplayMember = "Value";
+                CboLevels.ValueMember = "Key"; 
+                CboLevels.SelectedIndex = -1;
 
             }
             catch (Exception ex)
@@ -73,47 +62,33 @@ namespace NewBookRentalShopApp
             {
                 conn.Open();
 
-                var query = @"SELECT [bookIdx]
-                                   , b.Names 
-                                   , [Author]
-                                   , d.Names as DivNames
-                                   , d.Division
-                                   , [ReleaseDate]
-                                   , [ISBN]
-                                   , [Price]
-                                FROM bookstbl as b
-                                JOIN divtbl as d
-                                  ON b.Division = d.Division
-                            ";
+                var query = @"SELECT [memberIdx]
+                                   , [Names]
+                                   , [Levels]
+                                   , [Addr]
+                                   , [Mobile]
+                                   , [Email]
+                                FROM [membertbl]";
 
                 SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                 DataSet ds = new DataSet();
-                adapter.Fill(ds, "booktbl");
+                adapter.Fill(ds, "membertbl");
 
                 DgvResult.DataSource = ds.Tables[0];
                 DgvResult.ReadOnly = true; // 수정불가
-                DgvResult.Columns[0].HeaderText = "책순번";
-                DgvResult.Columns[1].HeaderText = "책제목";
-                DgvResult.Columns[2].HeaderText = "저자";
-                DgvResult.Columns[3].HeaderText = "장르";
-                DgvResult.Columns[4].HeaderText = "장르코드";
-                DgvResult.Columns[5].HeaderText = "출판일";
-                DgvResult.Columns[6].HeaderText = "ISBN";
-                DgvResult.Columns[7].HeaderText = "책가격";
+                DgvResult.Columns[0].HeaderText = "회원번호";
+                DgvResult.Columns[1].HeaderText = "회원명";
+                DgvResult.Columns[2].HeaderText = "등급";
+                DgvResult.Columns[3].HeaderText = "주소";
+                DgvResult.Columns[4].HeaderText = "전화번호";
+                DgvResult.Columns[5].HeaderText = "이메일";
                 // 각 컬럼의 넓이 지정
                 DgvResult.Columns[0].Width = 80;
-                DgvResult.Columns[1].Width = 200;
-                DgvResult.Columns[2].Width = 150;
-                DgvResult.Columns[3].Width = 80;
-                DgvResult.Columns[4].Visible = false; // 장르코드 열 숨김
-                DgvResult.Columns[5].Width = 100;
-                DgvResult.Columns[6].Width = 120;
-                DgvResult.Columns[7].Width = 80;
-
-
-
-
-
+                DgvResult.Columns[1].Width = 80;
+                DgvResult.Columns[2].Width = 70;
+                DgvResult.Columns[3].Width = 200;
+                DgvResult.Columns[4].Width = 100; // 장르코드 열 숨김
+                DgvResult.Columns[5].Width = 150;
 
             }
         } // 로그인사용자 목록 데이터 업데이트 메소드  
@@ -121,11 +96,9 @@ namespace NewBookRentalShopApp
         private void BtnNew_Click(object sender, EventArgs e)
         {
             isNew = true;
-            TxtBookIdx.Text = TxtNames.Text = TxtAuthor.Text = TxtISBN.Text = string.Empty;
-            CboDivision.SelectedIndex = -1;
-            DtpReleaseDate.Value = DateTime.Now;
-            NudPirce.Value = 0;
-            TxtBookIdx.Focus(); // 입력창 포커스 Id
+            TxtMemberIdx.Text = TxtNames.Text = TxtAddr.Text = TxtEmail.Text = string.Empty;
+            CboLevels.SelectedIndex = -1;
+            TxtMemberIdx.Focus(); // 입력창 포커스 Id
         }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
         private void BtnSave_Click(object sender, EventArgs e)
@@ -134,17 +107,17 @@ namespace NewBookRentalShopApp
             // 출판일은 기본으로 오늘 날짜가 들어감, ISBN은 Null 가능, 책가격도 기본 0
             if (string.IsNullOrEmpty(TxtNames.Text))
             {
-                MessageBox.Show("책제목을 입력하세요");
+                MessageBox.Show("회원명을 입력하세요");
                 return;
             }
-            if (string.IsNullOrEmpty(TxtAuthor.Text))
+            if (string.IsNullOrEmpty(TxtAddr.Text))
             {
-                MessageBox.Show("저자를 입력하세요");
+                MessageBox.Show("주소를 입력하세요");
                 return;
             }
-            if (CboDivision.SelectedIndex < 0)
+            if (CboLevels.SelectedIndex < 0)
             {
-                MessageBox.Show("장르를 선택하세요");
+                MessageBox.Show("등급을 선택하세요");
                 return;
             }
 
@@ -156,51 +129,47 @@ namespace NewBookRentalShopApp
                     var query = "";
                     if (isNew) // INSERT문 실행 ==> BtnNew 버튼을 눌러야 isNew의 값이 True
                     {
-                        query = @"INSERT INTO [dbo].[bookstbl]
-                                            ( [Author]
-                                            , [Division]
-                                            , [Names]
-                                            , [ReleaseDate]
-                                            , [ISBN]
-                                            , [Price])
-                                       VALUES
-                                            ( @Author
-                                            , @Division
-                                            , @Names
-                                            , @ReleaseDate
-                                            , @ISBN
-                                            , @Price)";
+                        query = @"INSERT INTO [membertbl]
+                                               ([Names]
+                                               ,[Levels]
+                                               ,[Addr]
+                                               ,[Mobile]
+                                               ,[Email])
+                                         VALUES
+                                               (@Names
+                                               ,@Levels
+                                               ,@Addr
+                                               ,@Mobile
+                                               ,@Email)";
                     }
                     else // UPDATE문 실행
                     { 
-                        query = @"UPDATE [bookstbl]
-                                     SET [Author] = @Author
-                                       , [Division] = @Division
-                                       , [Names] = @Names
-                                       , [ReleaseDate] = @ReleaseDate
-                                       , [ISBN] = @ISBN
-	                                   , [Price] = @Price
-                                   WHERE bookIdx = @bookIdx"; 
+                        query = @"UPDATE [membertbl]
+                                           SET [Names] = @Names
+                                              ,[Levels] = @Levels
+                                              ,[Addr] = @Addr
+                                              ,[Mobile] = @Mobile
+                                              ,[Email] = @Email
+                                         WHERE memberIdx = @memberIdx"; 
                     }
 
                     SqlCommand cmd = new SqlCommand(query, conn);
 
                     SqlParameter prmNames = new SqlParameter(@"Names", TxtNames.Text);
                     cmd.Parameters.Add(prmNames);
-                    SqlParameter prmAuthor = new SqlParameter(@"Author", TxtAuthor.Text);
-                    cmd.Parameters.Add(prmAuthor);
-                    SqlParameter prmDivision = new SqlParameter(@"Division", CboDivision.SelectedValue);
-                    cmd.Parameters.Add(prmDivision);
-                    SqlParameter prmReleaseDate = new SqlParameter(@"ReleaseDate", DtpReleaseDate.Value);
-                    cmd.Parameters.Add(prmReleaseDate);
-                    SqlParameter prmISBN = new SqlParameter(@"ISBN", TxtISBN.Text);
-                    cmd.Parameters.Add(prmISBN);
-                    SqlParameter prmPrice = new SqlParameter(@"Price", NudPirce.Value);
-                    cmd.Parameters.Add(prmPrice);
+                    SqlParameter prmAddr = new SqlParameter(@"Addr", TxtAddr.Text);
+                    cmd.Parameters.Add(prmAddr);
+                    SqlParameter prmLevels = new SqlParameter(@"Levels", CboLevels.SelectedValue);
+                    cmd.Parameters.Add(prmLevels);
+                    SqlParameter prmMobile = new SqlParameter(@"Mobile", TxtMobile.Text);
+                    cmd.Parameters.Add(prmMobile);
+                    SqlParameter prmEmail = new SqlParameter(@"Email", TxtEmail.Text);
+                    cmd.Parameters.Add(prmEmail);
+
                     if(isNew != true)
                     {
-                        SqlParameter prmBookIdx = new SqlParameter("@bookIdx", TxtBookIdx.Text);
-                        cmd.Parameters.Add(prmBookIdx);
+                        SqlParameter prmMemberIdx = new SqlParameter("@memberIdx", TxtMemberIdx.Text);
+                        cmd.Parameters.Add(prmMemberIdx);
                     }
 
                     // Command에 Parameter를 연결해줘야함
@@ -223,11 +192,9 @@ namespace NewBookRentalShopApp
                 MetroMessageBox.Show(this, $"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            TxtBookIdx.Text = TxtNames.Text = TxtAuthor.Text = TxtISBN.Text = string.Empty;
-            CboDivision.SelectedIndex = -1;
-            DtpReleaseDate.Value = DateTime.Now;
-            NudPirce.Value = 0;
-
+            TxtMemberIdx.Text = TxtNames.Text = TxtAddr.Text = TxtEmail.Text = string.Empty;
+            CboLevels.SelectedIndex = -1;
+                
             RefreshData(); // 신규데이터 업데이트
         }
 
@@ -238,21 +205,12 @@ namespace NewBookRentalShopApp
             if (e.RowIndex > -1) // 아무 것도 선택하지 않는 것이 -1 ===> 즉, 어떤 것이라도 클릭되면
             {
                 var selData = DgvResult.Rows[e.RowIndex]; // 내가 선택한 값의 행인덱스(RowIndex)를 받아온다
-                TxtBookIdx.Text = selData.Cells[0].Value.ToString();
+                TxtMemberIdx.Text = selData.Cells[0].Value.ToString();
                 TxtNames.Text = selData.Cells[1].Value.ToString();
-                TxtAuthor.Text = selData.Cells[2].Value.ToString();
-                DtpReleaseDate.Value = DateTime.Parse(selData.Cells[5].Value.ToString());
-                // "2019-03-09" 문자열을 DateTime.Parse()로
-                // DateTime형변환
-                TxtISBN.Text = selData.Cells[6].Value.ToString();
-                NudPirce.Value = Decimal.Parse(selData.Cells[7].Value.ToString());
-                // "20000" 가격을 숫자형으로 형변환
-                // 거의 모든 타입에 *.Parse(string) 메서드가 존재
-                TxtBookIdx.ReadOnly = true;
-
-
-                // 콤보박스는 맨 마지막에
-                CboDivision.SelectedValue = selData.Cells[4].Value; // 구분코드로 선택해야함
+                CboLevels.SelectedValue = selData.Cells[2].Value;
+                TxtAddr.Text = selData.Cells[3].Value.ToString();
+                TxtMobile.Text = selData.Cells[4].Value.ToString();
+                TxtEmail.Text = selData.Cells[5].Value.ToString();
 
                 isNew = false; // UPDATA
 
@@ -261,9 +219,9 @@ namespace NewBookRentalShopApp
 
         private void BtnDel_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(TxtBookIdx.Text)) // 장르코드가 없으면 
+            if (string.IsNullOrEmpty(TxtMemberIdx.Text)) // 장르코드가 없으면 
             {
-                MetroMessageBox.Show(this, "삭제할 장르 코드를 선택하세요", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MetroMessageBox.Show(this, "삭제할 회원을 선택하세요", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             
@@ -273,11 +231,11 @@ namespace NewBookRentalShopApp
             using (SqlConnection conn = new SqlConnection(Helper.Common.ConnString))
             {
                 conn.Open();
-                var query = @"DELETE FROM bookstbl WHERE BookIdx = @BookIdx";
+                var query = @"DELETE FROM membertbl WHERE memberIdx = @memberIdx";
                 
                 SqlCommand cmd = new SqlCommand(query, conn);
-                SqlParameter prmDivision = new SqlParameter("@BookIdx", TxtBookIdx.Text);
-                cmd.Parameters.Add(prmDivision);
+                SqlParameter prmMember = new SqlParameter("@memberIdx", TxtMemberIdx.Text);
+                cmd.Parameters.Add(prmMember);
 
                 var result = cmd.ExecuteNonQuery();
 
@@ -295,18 +253,10 @@ namespace NewBookRentalShopApp
 
             }
 
-            TxtBookIdx.Text = TxtNames.Text = TxtAuthor.Text = TxtISBN.Text = string.Empty;
-            CboDivision.SelectedIndex = -1;
-            DtpReleaseDate.Value = DateTime.Now;
-            NudPirce.Value = 0;
+            TxtMemberIdx.Text = TxtNames.Text = TxtAddr.Text = TxtEmail.Text = TxtMobile.Text = string.Empty;
+            CboLevels.SelectedIndex = -1;
             RefreshData(); // 데이터그리드 재조회
         }
 
-        // ISBN Text창에 숫자만 입력되도록 처리
-        private void TxtISBN_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // 숫자 이외에는 전부 막아버림
-            if(!char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && !char.IsControl(e.KeyChar)) { e.Handled = true; }
-        }
     }
 }

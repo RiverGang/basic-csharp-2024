@@ -383,6 +383,9 @@
         - 대출관리
         - 이 프로그램은 ...
 
+        - ![책대여프로그램](https://raw.githubusercontent.com/RiverGang/basic-csharp-2024/main/images/cs006.png)
+
+
 
 ## 나머지
 - Pending

@@ -68,21 +68,28 @@ namespace NewBookRentalShopApp
         private void BtnSave_Click(object sender, EventArgs e)
         {
             var md5Hash = MD5.Create(); //MD5 암호화용 객체 생성
+            var valid = true;
+            var errMsg = "";
 
-            // 입력검증(Validation Check)
+            #region "입력검증(Validation Check)"
             // 순번, 이름, 패스워드를 넣지 않으면 저장버튼이 눌리지 않도록
 
             if (string.IsNullOrEmpty(TxtUserId.Text))
             {
-                MessageBox.Show("사용자 아이디를 입력하세요");
-                return;
+                errMsg += "사용자 아이디를 입력하세요\n";
+                valid = false;
             }
             if (string.IsNullOrEmpty(TxtPassword.Text))
             {
-                MessageBox.Show("패스워드를 입력하세요");
-                return;
+                errMsg += ("패스워드를 입력하세요");
+                valid = false;
             }
 
+            if(valid == false)
+            {
+                MetroMessageBox.Show(this.Parent.Parent, errMsg, "입력오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            #endregion
             try
             {
                 using (SqlConnection conn = new SqlConnection(Helper.Common.ConnString))
@@ -129,11 +136,13 @@ namespace NewBookRentalShopApp
 
                     if (result > 0)
                     {
-                        MessageBox.Show(this, "저장성공", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(this.Parent.Parent, "저장성공", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // 메세지박스의 부모인 FrmLoingUser의 부모 Frmmain를 기준으로 해야함
+
                     }
                     else
                     {
-                        MessageBox.Show(this,"저장실패", "저장", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this.Parent.Parent,"저장실패", "저장", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     }
                 }

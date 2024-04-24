@@ -114,7 +114,8 @@ namespace NewBookRentalShopApp
                 {
                     chkUserId = reader["userId"] != null ? reader["userId"].ToString() : "-"; // reader이 가리키는 쿼리에 속성 ["??"] 값이 있으면 (not null) 값을 string으로 변환
                     chkPassword = reader["password"] != null ? reader["password"].ToString() : "-"; //Password가 0이면 -로 변경
-                    
+                    Helper.Common.LoginId = chkUserId; // 로그인된 아이디 할당
+
                     return true;
                 }
                 else
