@@ -1,6 +1,11 @@
 ## 개인 프로젝트
 - 야구 기록 프로그램
     - 특징: 야구 기록지 작성 기능구현
+ 
+      
+    https://github.com/RiverGang/basic-csharp-2024/assets/122778656/a3298123-2c24-4b81-a58f-b5fe2a10d46c
+
+
     
     - WinForm
         - 로그인
