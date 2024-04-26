@@ -18,7 +18,7 @@
                 - Data Grid View에 행 Click -> 선수 목록 팝업창 open -> 선수 선택 -> Data Grid 및 상단에 선수정보 반영
             
             
-            ![타구기록](https://raw.githubusercontent.com/RiverGang/basic-csharp-2024/main/images/pj001.png)
+            ![타구기록](https://raw.githubusercontent.com/RiverGang/basic-csharp-2024/main/images/pj006.png)
             
             - 타구상황 & 방향에 따른 버튼 클릭 -> 타구 상황 별 기호/이미지를 PictureBox/Label에 기록
 
@@ -33,6 +33,8 @@
                     - 아웃카운트 PictureBox 클릭 시, 아웃카운트 팝업 열림
 
             - 개선점
+                - 아이콘 변경
+                - Base3,4 클릭 시 수정이벤트
                 - 이미 데이터가 입력된 행은 팝업이 뜨지 않도록하기
                 - 이닝상황 콤보박스 옆에 팀 선택 콤보박스 추가 & 팀선택에 따라 타순 목록 클릭 시 open 되는 팝업창이 목록이 팀별로 다르게 나오도록하기
                 - 아웃카운트 popup에 득점 옵션 추가하기
