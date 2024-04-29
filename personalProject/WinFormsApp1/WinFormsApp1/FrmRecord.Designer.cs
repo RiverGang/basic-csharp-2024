@@ -29,7 +29,7 @@ namespace WinFormsApp1
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmRecord));
             panel1 = new Panel();
             LblBase4 = new Label();
@@ -42,6 +42,7 @@ namespace WinFormsApp1
             PicBase2 = new PictureBox();
             PicBase1 = new PictureBox();
             splitContainer1 = new SplitContainer();
+            CboTeams = new ComboBox();
             CboInning = new ComboBox();
             DgvBattingOrder = new DataGridView();
             ColStartingNum = new DataGridViewTextBoxColumn();
@@ -240,6 +241,7 @@ namespace WinFormsApp1
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(CboTeams);
             splitContainer1.Panel1.Controls.Add(CboInning);
             splitContainer1.Panel1.Controls.Add(DgvBattingOrder);
             // 
@@ -267,12 +269,21 @@ namespace WinFormsApp1
             splitContainer1.SplitterDistance = 329;
             splitContainer1.TabIndex = 3;
             // 
+            // CboTeams
+            // 
+            CboTeams.FormattingEnabled = true;
+            CboTeams.Location = new Point(0, 6);
+            CboTeams.Name = "CboTeams";
+            CboTeams.Size = new Size(202, 23);
+            CboTeams.TabIndex = 2;
+            CboTeams.SelectedIndexChanged += CboTeams_SelectedIndexChanged;
+            // 
             // CboInning
             // 
             CboInning.FormattingEnabled = true;
-            CboInning.Location = new Point(0, 6);
+            CboInning.Location = new Point(208, 6);
             CboInning.Name = "CboInning";
-            CboInning.Size = new Size(122, 23);
+            CboInning.Size = new Size(118, 23);
             CboInning.TabIndex = 1;
             CboInning.SelectedIndexChanged += CboInning_SelectedIndexChanged;
             // 
@@ -284,14 +295,14 @@ namespace WinFormsApp1
             DgvBattingOrder.GridColor = SystemColors.ControlLight;
             DgvBattingOrder.Location = new Point(0, 35);
             DgvBattingOrder.Name = "DgvBattingOrder";
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("맑은 고딕 Semilight", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            DgvBattingOrder.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("맑은 고딕 Semilight", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            DgvBattingOrder.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             DgvBattingOrder.RowHeadersVisible = false;
             DgvBattingOrder.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             DgvBattingOrder.Size = new Size(329, 342);
@@ -761,6 +772,7 @@ namespace WinFormsApp1
             Controls.Add(statusStrip2);
             Controls.Add(splitContainer1);
             Font = new Font("맑은 고딕", 9F, FontStyle.Bold, GraphicsUnit.Point, 129);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FrmRecord";
             Text = "Baseball Record";
             Load += FrmRecord_Load;
@@ -859,5 +871,6 @@ namespace WinFormsApp1
         private ComboBox CboInning;
         private ToolStripStatusLabel sLblBattingNum;
         private ToolStripStatusLabel sLblPlayerName;
+        private ComboBox CboTeams;
     }
 }

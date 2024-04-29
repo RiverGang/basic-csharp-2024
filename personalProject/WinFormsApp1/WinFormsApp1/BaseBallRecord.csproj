@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>images\baseball.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="images\baseball.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MetroModernUI" Version="1.4.0" />

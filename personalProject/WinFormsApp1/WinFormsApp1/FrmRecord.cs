@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 using System.Windows.Forms;
 using MetroFramework.Forms;
 
@@ -28,9 +29,9 @@ namespace WinFormsApp1
             frmLogin.ShowDialog();
             LblLoginID.Text = Helper.Common.LoginId;
             //DgvBattingOrder.RowCount = 9;
-            for(int i = 0; i<9; i++)
+            for (int i = 0; i < 9; i++)
             {
-                DgvBattingOrder.Rows.Add($"{i+1}");
+                DgvBattingOrder.Rows.Add($"{i + 1}");
             }
             InitInputBattingNumber();
             InitInputInningList();
@@ -545,22 +546,32 @@ namespace WinFormsApp1
         private void DgvBattingOrder_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             var selData = DgvBattingOrder.Rows[e.RowIndex];
-            PopPlayerList popup = new PopPlayerList();
-            popup.StartPosition = FormStartPosition.CenterParent;
 
-
-            if(popup.ShowDialog() == DialogResult.Yes)
+            if (selData.Cells[1].Value == null)
             {
-                selData.Cells[1].Value = Helper.Common.SelBackNumber;
-                selData.Cells[2].Value = Helper.Common.SelPlayerName;
+                PopPlayerList popup = new PopPlayerList();
+                popup.StartPosition = FormStartPosition.CenterParent;
+
+                if (popup.ShowDialog() == DialogResult.Yes)
+                {
+                    selData.Cells[1].Value = Helper.Common.SelBackNumber;
+                    selData.Cells[2].Value = Helper.Common.SelPlayerName;
+                }
             }
-           if (e.RowIndex > -1) // 아무 것도 선택하지 않는 것이 -1 ===> 즉, 어떤 것이라도 클릭되면
+
+
+            if (e.RowIndex > -1) // 아무 것도 선택하지 않는 것이 -1 ===> 즉, 어떤 것이라도 클릭되면
             {
                 var Data = DgvBattingOrder.SelectedRows[0];
                 sLblBattingNum.Text = Data.Cells[0].Value.ToString() + "번 타자:";
                 sLblPlayerName.Text = Data.Cells[2].Value.ToString();
                 sLblTeamName.Text = Helper.Common.SelTeamName;
             }
+        }
+
+        private void CboTeams_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
