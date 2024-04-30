@@ -26,7 +26,7 @@ namespace WinFormsApp1
             {
                 conn.Open();
 
-                var query = @"SELECT p.playerBacknumber
+                var query = @$"SELECT p.playerBacknumber
 	                               , p.playerName
 	                               , t.[teamName]
                                 FROM TeamInfotbl AS t

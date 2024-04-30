@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
@@ -35,7 +37,7 @@ namespace WinFormsApp1
             }
             InitInputBattingNumber();
             InitInputInningList();
-
+            InitInputTeamList();
 
             LblBase1.Parent = PicBase1;
             LblBase2.Parent = PicBase2;
@@ -122,7 +124,39 @@ namespace WinFormsApp1
 
             }
         }
+        private void InitInputTeamList()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Helper.Common.ConnString))
+                {
+                    conn.Open();
+                    var query = @"SELECT teamIdx, teamName FROM TeamInfotbl";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    var temp = new Dictionary<int, string>();
 
+                    while (reader.Read())
+                    {
+                        // Key, Value
+                        // teamIdx, teamName 
+                        // readerp[0] = Division컬럼, reader[1] = Names 컬럼
+                        temp.Add(int.Parse(reader[0].ToString()), reader[1].ToString());
+                    }
+
+                    Debug.WriteLine(temp.Count);
+                    CboTeams.DataSource = new BindingSource(temp, null);
+                    CboTeams.DisplayMember = "Value";
+                    CboTeams.ValueMember = "Key";
+                    CboTeams.SelectedIndex = -1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
         // 초기화
         public void Reset()
@@ -556,6 +590,9 @@ namespace WinFormsApp1
                 {
                     selData.Cells[1].Value = Helper.Common.SelBackNumber;
                     selData.Cells[2].Value = Helper.Common.SelPlayerName;
+                    selData.Cells[1].ReadOnly = true;
+                    selData.Cells[2].ReadOnly = true; // 값이 들어간 선수명과 등번호는 수정불가(DB에서 불러온 값)
+
                 }
             }
 
@@ -571,7 +608,10 @@ namespace WinFormsApp1
 
         private void CboTeams_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            Helper.Common.SelTeamName = CboTeams.Text;
+            //Helper.Common.SelTeamNum = int.Parse(CboTeams.SelectedValue.ToString());
+            sLblTeamName.Text = Helper.Common.SelTeamName;
+            
         }
     }
 }

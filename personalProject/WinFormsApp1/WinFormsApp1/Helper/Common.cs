@@ -15,6 +15,7 @@ namespace WinFormsApp1.Helper
         public static string SelPlayerName { get; set; }
         public static string SelBackNumber { get; set; }
         public static string SelTeamName { get; set; }
+        public static int SelTeamNum { get; set; }
 
 
         // 로그인아이디
